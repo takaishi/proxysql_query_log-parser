@@ -1,4 +1,4 @@
-module ProxysqlLogParser
+module ProxysqlQueryLogParser
   class Parser
     def parse(path)
       io = File.open(path)

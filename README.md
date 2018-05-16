@@ -1,12 +1,12 @@
-# ProxySQL Log Parser
+# ProxySQL Query Log Parser
 
 
 ## Usage
 
 ```
-require 'proxysql_log_parser'
+require 'proxysql_query_log_parser'
 
-parser = ProxysqlLogParser::Parser.new
+parser = ProxysqlQueryLogParser::Parser.new
 parser.parse('queries.log.00000011')
 
 ```
