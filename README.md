@@ -4,9 +4,9 @@
 ## Usage
 
 ```
-require 'proxysql_query_log_parser'
+require 'proxysql_query_log/parser'
 
-parser = ProxysqlQueryLogParser::Parser.new
+parser = ProxysqlQueryLog::Parser.new
 parser.load_file('queries.log.00000011').each do |query|
   query.print
 end

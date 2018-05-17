@@ -1,4 +1,4 @@
-module ProxysqlQueryLogParser
+module ProxysqlQueryLog
   class Query
     attr_accessor :thread_id, :username, :schema_name, :client, :hid, :server, :start_time, :end_time, :digest, :query
     #def initialize(thread_id, username, schemaname, client, hid, server, start_time, end_time, digest, query)
