@@ -38,18 +38,15 @@ module ProxysqlQueryLog
     end
 
     def parse_username(io)
-      username_len = read_encoded_length(io)
-      read_encoded_string(io, username_len)
+      read_encoded_string(io,read_encoded_length(io))
     end
 
     def parse_schema_name(io)
-      schema_name_len = read_encoded_length(io)
-      read_encoded_string(io, schema_name_len)
+      read_encoded_string(io, read_encoded_length(io))
     end
 
     def parse_client(io)
-      client_len = read_encoded_length(io)
-      read_encoded_string(io, client_len)
+      read_encoded_string(io, read_encoded_length(io))
     end
 
     def parse_hid(io)
@@ -57,8 +54,7 @@ module ProxysqlQueryLog
     end
 
     def parse_server(io)
-      server_len = read_encoded_length(io)
-      read_encoded_string(io, server_len)
+      read_encoded_string(io,read_encoded_length(io))
     end
 
     def parse_start_time(io)
