@@ -38,9 +38,7 @@ module ProxysqlQueryLogParser
         q.query = read_encoded_string(io, query_len)
         queries << q
       end
-      queries.each do |query|
-        query.print
-      end
+      queries
     end
 
     private
