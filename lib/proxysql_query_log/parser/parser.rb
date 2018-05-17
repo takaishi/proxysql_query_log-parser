@@ -9,23 +9,28 @@ module ProxysqlQueryLog
       queries = []
       
       while true
-        io.read(8)
-        s = io.read(1)
-        break unless s
-        q = Query.new
-        s.unpack('b')
-        
-        q.thread_id = parse_thread_id(io)
-        q.username = parse_username(io)
-        q.schema_name = parse_schema_name(io)
-        q.client = parse_client(io)
-        q.hid = parse_hid(io)
-        q.server = parse_server(io)
-        q.start_time = parse_start_time(io)
-        q.end_time = parse_end_time(io)
-        q.digest = parse_digest(io)
-        q.query = parse_query(io)
+        raw_total_bytes = io.read(1)
+        break unless raw_total_bytes
+        total_bytes = raw_total_bytes.unpack('C')[0]
+        # io.read(7)
+        io.seek(7, IO::SEEK_CUR)
 
+        raw = io.read(total_bytes)
+        query_io = StringIO.new(raw, 'r+')
+        q = Query.new
+
+        if query_io.read(1).unpack('C')[0] == 0
+          q.thread_id = parse_thread_id(query_io)
+          q.username = parse_username(query_io)
+          q.schema_name = parse_schema_name(query_io)
+          q.client = parse_client(query_io)
+          q.hid = parse_hid(query_io)
+          q.server = parse_server(query_io)
+          q.start_time = parse_start_time(query_io)
+          q.end_time = parse_end_time(query_io)
+          q.digest = parse_digest(query_io)
+          q.query = parse_query(query_io)
+        end
         queries << q
       end
       queries
