@@ -80,6 +80,7 @@ module ProxysqlQueryLog
       query_len = read_encoded_length(io)
       read_encoded_string(io, query_len)
     end
+
     def mysql_decode_length(buf)
       if buf <= 251
         return 1
@@ -93,28 +94,14 @@ module ProxysqlQueryLog
         return 0
       end
     end
-    
-    def mysql_decode_length_2(buf, len)
-      if buf[0] <= 251
-        return buf[0]
-      elsif buf[0] == 252
-        return buf[0]
-      elsif buf[0] == 253
-        return buf[0]
-      elsif buf[0] == 254
-        return buf[0]
-      else
-        return 0
-      end
-    end
-    
+
     def read_encoded_length(io)
       buf = io.read(1).unpack('C')
       len = mysql_decode_length(buf[0])
       unless len == 0
         buf2 = io.read(len-1).unpack('C*')
         buf.concat(buf2)
-        return mysql_decode_length_2(buf, len)
+        return buf == 0 ? 0 : buf[0]
       end
     end
     
