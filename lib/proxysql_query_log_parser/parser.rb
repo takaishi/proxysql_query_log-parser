@@ -17,7 +17,7 @@ module ProxysqlQueryLogParser
         
         q.thread_id = parse_thread_id(io)
         q.username = parse_username(io)
-        q.schemaname = parse_schemaname(io)
+        q.schema_name = parse_schema_name(io)
         q.client = parse_client(io)
         q.hid = parse_hid(io)
         q.server = parse_server(io)
@@ -42,9 +42,9 @@ module ProxysqlQueryLogParser
       read_encoded_string(io, username_len)
     end
 
-    def parse_schemaname(io)
-      schemaname_len = read_encoded_length(io)
-      read_encoded_string(io, schemaname_len)
+    def parse_schema_name(io)
+      schema_name_len = read_encoded_length(io)
+      read_encoded_string(io, schema_name_len)
     end
 
     def parse_client(io)
