@@ -11,7 +11,7 @@ module ProxysqlQueryLogParser
         q = Query.new
         s.unpack('b')
         
-        thread_id = read_encoded_length(io)
+        q.thread_id = read_encoded_length(io)
         username_len = read_encoded_length(io)
         q.username = read_encoded_string(io, username_len)
         schemaname_len = read_encoded_length(io)
