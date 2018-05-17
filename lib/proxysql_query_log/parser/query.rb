@@ -33,5 +33,13 @@ module ProxysqlQueryLog
           digest: digest
       }.to_json
     end
+
+    def start_time=(val)
+      @start_time = val / 1000 / 1000
+    end
+
+    def end_time=(val)
+      @end_time = val / 1000 / 1000
+    end
   end
 end
