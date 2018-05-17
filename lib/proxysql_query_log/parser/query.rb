@@ -15,7 +15,7 @@ module ProxysqlQueryLog
     #end
 
     def print
-      puts "ProxySQL LOG QUERY: thread_id=\"#{@thread_id}\" username=\"#{@username}\" schema_name=\"#{@schema_name}\" client=\"#{@client}\" HID=#{@hid} server=\"#{@server}\" starttime=\"#{Time.at(@start_time)}\" endtime=\"#{Time.at(@end_time)}\" duration=#{@end_time - @start_time}us digest=\"#{@digest}\"
+      puts "ProxySQL LOG QUERY: thread_id=\"#{@thread_id}\" username=\"#{@username}\" schema_name=\"#{@schema_name}\" client=\"#{@client}\" HID=#{@hid} server=\"#{@server}\" starttime=\"#{Time.at(@start_time/1000/1000)}\" endtime=\"#{Time.at(@end_time/1000/1000)}\" duration=#{@end_time - @start_time}us digest=\"#{@digest}\"
 #{@query}"
     end
 
