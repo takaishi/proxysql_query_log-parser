@@ -18,5 +18,20 @@ module ProxysqlQueryLog
       puts "ProxySQL LOG QUERY: thread_id=\"#{@thread_id}\" username=\"#{@username}\" schema_name=\"#{@schema_name}\" client=\"#{@client}\" HID=#{@hid} server=\"#{@server}\" starttime=\"#{Time.at(@start_time)}\" endtime=\"#{Time.at(@end_time)}\" duration=#{@end_time - @start_time}us digest=\"#{@digest}\"
 #{@query}"
     end
+
+    def to_json
+      {
+          thread_id: thread_id,
+          username: username,
+          schema_name: schema_name,
+          client: client,
+          HID: hid,
+          server: server,
+          start_time: Time.at(start_time),
+          end_time: Time.at(end_time),
+          duration: end_time - start_time,
+          digest: digest
+      }.to_json
+    end
   end
 end
