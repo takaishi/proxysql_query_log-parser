@@ -27,19 +27,11 @@ module ProxysqlQueryLog
           client: client,
           HID: hid,
           server: server,
-          start_time: Time.at(start_time),
-          end_time: Time.at(end_time),
+          start_time: Time.at(start_time/1000/1000),
+          end_time: Time.at(end_time/1000/1000),
           duration: end_time - start_time,
           digest: digest
       }.to_json
-    end
-
-    def start_time=(val)
-      @start_time = val / 1000 / 1000
-    end
-
-    def end_time=(val)
-      @end_time = val / 1000 / 1000
     end
   end
 end
