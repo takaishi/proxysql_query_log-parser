@@ -82,16 +82,17 @@ module ProxysqlQueryLog
     end
 
     def mysql_decode_length(buf)
-      if buf <= 251
-        return 1
-      elsif buf == 252
-        return 3
-      elsif buf == 253
-        return 4
-      elsif buf == 254
-        return 9
-      else
-        return 0
+      case
+        when buf <= 251
+          1
+        when buf == 252
+          3
+        when buf == 253
+          4
+        when buf == 254
+          9
+        else
+          0
       end
     end
 
