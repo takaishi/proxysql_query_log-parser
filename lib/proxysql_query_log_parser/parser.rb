@@ -1,7 +1,11 @@
 module ProxysqlQueryLogParser
   class Parser
-    def parse(path)
+    def load_file(path)
       io = File.open(path)
+      parse(io)
+    end
+
+    def parse(io)
       queries = []
       
       while true
