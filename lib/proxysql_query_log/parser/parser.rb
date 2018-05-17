@@ -83,13 +83,13 @@ module ProxysqlQueryLog
 
     def mysql_decode_length(buf)
       case
-        when buf <= 251
+        when buf <= 0xfb
           1
-        when buf == 252
+        when buf == 0xfc
           3
-        when buf == 253
+        when buf == 0xfd
           4
-        when buf == 254
+        when buf == 0xfe
           9
         else
           0
