@@ -15,27 +15,17 @@ module ProxysqlQueryLogParser
         q = Query.new
         s.unpack('b')
         
-        q.thread_id = read_encoded_length(io)
-        username_len = read_encoded_length(io)
-        q.username = read_encoded_string(io, username_len)
-        schemaname_len = read_encoded_length(io)
-        q.schemaname = read_encoded_string(io, schemaname_len)
-        client_len = read_encoded_length(io)
-        q.client = read_encoded_string(io, client_len)
-        q.hid = read_encoded_length(io)
-        server_len = read_encoded_length(io)
-        q.server = read_encoded_string(io, server_len)
-        
-        io.read(1).unpack('C')
-        q.start_time = io.read(8).unpack('Q*')[0]
-        io.read(1).unpack('C')
-        q.end_time = io.read(8).unpack('Q*')[0]
-        
-        io.read(1).unpack('C')
-        q.digest = "0x#{io.read(8).unpack('I*').map{|n| sprintf("%X", n)}.join("")}"
-        
-        query_len = read_encoded_length(io)
-        q.query = read_encoded_string(io, query_len)
+        q.thread_id = parse_thread_id(io)
+        q.username = parse_username(io)
+        q.schemaname = parse_schemaname(io)
+        q.client = parse_client(io)
+        q.hid = parse_hid(io)
+        q.server = parse_server(io)
+        q.start_time = parse_start_time(io)
+        q.end_time = parse_end_time(io)
+        q.digest = parse_digest(io)
+        q.query = parse_query(io)
+
         queries << q
       end
       queries
@@ -43,6 +33,53 @@ module ProxysqlQueryLogParser
 
     private
 
+    def parse_thread_id(io)
+      read_encoded_length(io)
+    end
+
+    def parse_username(io)
+      username_len = read_encoded_length(io)
+      read_encoded_string(io, username_len)
+    end
+
+    def parse_schemaname(io)
+      schemaname_len = read_encoded_length(io)
+      read_encoded_string(io, schemaname_len)
+    end
+
+    def parse_client(io)
+      client_len = read_encoded_length(io)
+      read_encoded_string(io, client_len)
+    end
+
+    def parse_hid(io)
+      read_encoded_length(io)
+    end
+
+    def parse_server(io)
+      server_len = read_encoded_length(io)
+      read_encoded_string(io, server_len)
+    end
+
+    def parse_start_time(io)
+      io.read(1).unpack('C')
+      io.read(8).unpack('Q*')[0]
+    end
+
+    def parse_end_time(io)
+      io.read(1).unpack('C')
+      io.read(8).unpack('Q*')[0]
+    end
+
+    def parse_digest(io)
+      io.read(1).unpack('C')
+      "0x#{io.read(8).unpack('I*').map{|n| sprintf("%X", n)}.join("")}"
+    end
+
+    def parse_query(io)
+      query_len = read_encoded_length(io)
+      read_encoded_string(io, query_len)
+    end
     def mysql_decode_length(buf)
       if buf <= 251
         return 1
