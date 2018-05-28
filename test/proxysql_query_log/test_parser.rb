@@ -32,8 +32,8 @@ class TestSample < Test::Unit::TestCase
 
   def test_singlefile
     File.open("#{TMP_DIR}/query_log", 'w+b') do |f|
-      p f
-      write_record(f)
+      param = {thread_id: 9, username: 'root', schema_name: 'alpaca', client: '127.0.0.1:34612', hid: 0, server: '127.0.0.1:3306', start_time: 1525944256367381, end_time: 1525944256367837, digest: '0xD69C6B36F32D2EAE', query: 'SELECT * FROM test'}
+      write_record(f, param)
       f.seek(0)
       parser = ProxysqlQueryLog::Parser.new
       q = parser.read(f)[0]
@@ -53,8 +53,8 @@ class TestSample < Test::Unit::TestCase
     end
   end
 
-  def write_record(f)
-    q = ProxysqlQueryLog::Query.create(9, 'root','alpaca','127.0.0.1:34612',0, '127.0.0.1:3306', 1525944256367381,1525944256367837, '0xD69C6B36F32D2EAE','SELECT * FROM test')
+  def write_record(f, param)
+    q = ProxysqlQueryLog::Query.create(param[:thread_id], param[:username], param[:schema_name], param[:client], param[:hid], param[:server], param[:start_time], param[:end_time], param[:digest], param[:query])
     buf = ''
     io = StringIO.new(buf)
 
