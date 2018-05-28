@@ -40,6 +40,42 @@ module ProxysqlQueryLog
       }.to_json
     end
 
+    def to_binary
+      buf = ''
+      io = StringIO.new(buf)
+
+      io.write([0].pack('C*'))
+      io.write([thread_id].pack('C*'))
+
+      io.write([username.size].pack('C*'))
+      io.write(username)
+
+      io.write([schema_name.size].pack('C*'))
+      io.write(schema_name)
+
+      io.write([client.size].pack('C*'))
+      io.write(client)
+
+      io.write([hid].pack('C*'))
+
+      io.write([server.size].pack('C*'))
+      io.write(server)
+
+      io.write([0xfe].pack('C*'))
+      io.write([start_time].pack('Q*'))
+
+      io.write([0xfe].pack('C*'))
+      io.write([end_time].pack('Q*'))
+
+      io.write([0xfe].pack('C*'))
+      io.write(digest.gsub(/0x/, '').scan(/.{1,8}/).map{|s| s.hex}.pack('I*'))
+
+      io.write([query.size].pack('C*'))
+      io.write(query)
+
+      buf
+    end
+
     def total_length
       len = 0
 

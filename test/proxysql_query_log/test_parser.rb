@@ -27,39 +27,7 @@ class TestSample < Test::Unit::TestCase
 
   def write_record(f, param)
     q = ProxysqlQueryLog::Query.create(param[:thread_id], param[:username], param[:schema_name], param[:client], param[:hid], param[:server], param[:start_time], param[:end_time], param[:digest], param[:query])
-    buf = ''
-    io = StringIO.new(buf)
-
-    io.write([0].pack('C*'))
-    io.write([q.thread_id].pack('C*'))
-
-    io.write([q.username.size].pack('C*'))
-    io.write(q.username)
-
-    io.write([q.schema_name.size].pack('C*'))
-    io.write(q.schema_name)
-
-    io.write([q.client.size].pack('C*'))
-    io.write(q.client)
-
-    io.write([q.hid].pack('C*'))
-
-    io.write([q.server.size].pack('C*'))
-    io.write(q.server)
-
-    io.write([0xfe].pack('C*'))
-    io.write([q.start_time].pack('Q*'))
-
-    io.write([0xfe].pack('C*'))
-    io.write([q.end_time].pack('Q*'))
-
-    io.write([0xfe].pack('C*'))
-    io.write(q.digest.gsub(/0x/, '').scan(/.{1,8}/).map{|s| s.hex}.pack('I*'))
-
-    io.write([q.query.size].pack('C*'))
-    io.write(q.query)
-
     f.write([q.total_length, 0, 0, 0, 0, 0, 0, 0].pack('C*'))
-    f.write(buf)
+    f.write(q.to_binary)
   end
 end
