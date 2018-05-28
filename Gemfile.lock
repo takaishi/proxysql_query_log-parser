@@ -1,0 +1,24 @@
+PATH
+  remote: .
+  specs:
+    proxysql_query_log-parser (0.0.1)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    power_assert (1.1.1)
+    rake (10.5.0)
+    test-unit (3.2.8)
+      power_assert
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  bundler (~> 1.16)
+  proxysql_query_log-parser!
+  rake (~> 10.0)
+  test-unit (~> 3.0)
+
+BUNDLED WITH
+   1.16.2
