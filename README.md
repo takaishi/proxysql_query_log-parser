@@ -1,5 +1,7 @@
 # ProxySQL Query Log Parser
 
+[![Build Status](https://travis-ci.org/takaishi/proxysql_query_log-parser.svg?branch=master)](https://travis-ci.org/takaishi/proxysql_query_log-parser)
+
 
 ## Usage
 
