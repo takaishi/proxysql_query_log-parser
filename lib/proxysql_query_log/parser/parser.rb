@@ -11,7 +11,7 @@ module ProxysqlQueryLog
       while true
         raw_total_bytes = io.read(1)
         break unless raw_total_bytes
-        total_bytes = raw_total_bytes.unpack('C')[0]
+        total_bytes = raw_total_bytes.unpack1('C')
         io.seek(7, IO::SEEK_CUR)
         raw = io.read(total_bytes)
         queries << parse(StringIO.new(raw, 'r+'))
@@ -21,7 +21,7 @@ module ProxysqlQueryLog
 
     def parse(io)
       q = Query.new
-      if io.read(1).unpack('C')[0] == 0
+      if io.read(1).unpack1('C') == 0
         q.thread_id = parse_thread_id(io)
         q.username = parse_username(io)
         q.schema_name = parse_schema_name(io)
@@ -64,12 +64,12 @@ module ProxysqlQueryLog
 
     def parse_start_time(io)
       io.read(1).unpack('C')
-      io.read(8).unpack('Q*')[0]
+      io.read(8).unpack1('Q*')
     end
 
     def parse_end_time(io)
       io.read(1).unpack('C')
-      io.read(8).unpack('Q*')[0]
+      io.read(8).unpack1('Q*')
     end
 
     def parse_digest(io)
@@ -108,7 +108,7 @@ module ProxysqlQueryLog
     end
     
     def read_encoded_string(io, len)
-      io.read(len).unpack('a*')[0]
+      io.read(len).unpack1('a*')
     end
   end
 end
