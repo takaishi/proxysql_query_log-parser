@@ -6,10 +6,25 @@ PATH
 GEM
   remote: https://rubygems.org/
   specs:
+    ast (2.4.0)
+    parallel (1.12.1)
+    parser (2.5.1.0)
+      ast (~> 2.4.0)
     power_assert (1.1.1)
+    powerpack (0.1.1)
+    rainbow (3.0.0)
     rake (10.5.0)
+    rubocop (0.56.0)
+      parallel (~> 1.10)
+      parser (>= 2.5)
+      powerpack (~> 0.1)
+      rainbow (>= 2.2.2, < 4.0)
+      ruby-progressbar (~> 1.7)
+      unicode-display_width (~> 1.0, >= 1.0.1)
+    ruby-progressbar (1.9.0)
     test-unit (3.2.8)
       power_assert
+    unicode-display_width (1.3.3)
 
 PLATFORMS
   ruby
@@ -18,6 +33,7 @@ DEPENDENCIES
   bundler (~> 1.16)
   proxysql_query_log-parser!
   rake (~> 10.0)
+  rubocop
   test-unit (~> 3.0)
 
 BUNDLED WITH
