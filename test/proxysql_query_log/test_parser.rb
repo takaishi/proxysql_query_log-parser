@@ -1,4 +1,5 @@
 require 'test/unit'
+require 'helper'
 require 'proxysql_query_log/parser'
 
 class TestSample < Test::Unit::TestCase
@@ -27,7 +28,7 @@ class TestSample < Test::Unit::TestCase
 
   def write_record(f, param)
     q = ProxysqlQueryLog::Query.create(param[:thread_id], param[:username], param[:schema_name], param[:client], param[:hid], param[:server], param[:start_time], param[:end_time], param[:digest], param[:query])
-    f.write([q.total_length, 0, 0, 0, 0, 0, 0, 0].pack('C*'))
-    f.write(q.to_binary)
+    f.write([total_length(q), 0, 0, 0, 0, 0, 0, 0].pack('C*'))
+    f.write(to_binary(q))
   end
 end
