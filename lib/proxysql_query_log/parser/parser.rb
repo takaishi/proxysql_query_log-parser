@@ -97,10 +97,12 @@ module ProxysqlQueryLog
     end
 
     def read_encoded_length(io)
-      buf = io.read(1).unpack('C')
-      len = mysql_decode_length(buf[0])
+      buf = io.read(1).unpack1('C')
+      len = mysql_decode_length(buf)
       unless len == 0
         buf2 = case len
+               when 1
+                 buf
                when 3
                  (io.read(len-1) + ("\x00" * (9 - len))).unpack1('Q*')
                when 9
