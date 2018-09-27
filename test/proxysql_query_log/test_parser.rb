@@ -39,7 +39,7 @@ class TestSample < Test::Unit::TestCase
         {input: "\xFC\x9A\x01", expected: 410},
 
         # == 0xfe
-        {input: "\xFE\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF", expected: 18446744073709551615},
+        {input: "\xFE\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF", expected: UINT64_MAX},
 
     ].each do |data|
       input = data[:input]
