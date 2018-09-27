@@ -9,12 +9,9 @@ module ProxysqlQueryLog
       queries = []
       
       while true
-        raw_total_bytes = io.read(1)
+        raw_total_bytes = io.read(8)
         break unless raw_total_bytes
-        total_bytes = raw_total_bytes.unpack1('C')
-        io.seek(7, IO::SEEK_CUR)
-        raw = io.read(total_bytes)
-        queries << parse(StringIO.new(raw, 'r+'))
+        queries << parse(io)
       end
       queries
     end
