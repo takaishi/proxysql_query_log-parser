@@ -101,6 +101,8 @@ module ProxysqlQueryLog
         buf2 = case len
                when 3
                  (io.read(len-1) + ("\x00" * (9 - len))).unpack1('Q*')
+               when 9
+                 io.read(8).unpack1('Q*')
                end
         return buf2
       end
