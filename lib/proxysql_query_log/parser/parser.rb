@@ -105,6 +105,8 @@ module ProxysqlQueryLog
                  buf
                when 3
                  (io.read(len-1) + ("\x00" * (9 - len))).unpack1('Q*')
+               when 4
+                 (io.read(3) + ("\x00")).unpack1('l*')
                when 9
                  io.read(8).unpack1('Q*')
                end
