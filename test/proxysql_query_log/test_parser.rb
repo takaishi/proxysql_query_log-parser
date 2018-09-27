@@ -32,13 +32,17 @@ class TestSample < Test::Unit::TestCase
 
     [
         # <= 0xfb
-        {input: "\xC8", expected: 200},
-        {input: "\xFB", expected: 251},
+        {input: "\xFA", expected: 250},
 
         # == 0xfc
-        {input: "\xFC\x9A\x01", expected: 410},
+        {input: "\xFC\xFB\x00", expected: 251},
+        {input: "\xFC\xFF\xFF", expected: 65535},
+
+        {input: "\xFD\x00\x00\x01", expected: 65536},
+        {input: "\xFD\xFF\xFF\xFF", expected: 16777215},
 
         # == 0xfe
+        {input: "\xFE\x00\x00\x00\x01\x00\x00\x00\x00", expected: 16777216},
         {input: "\xFE\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF", expected: UINT64_MAX},
 
     ].each do |data|
