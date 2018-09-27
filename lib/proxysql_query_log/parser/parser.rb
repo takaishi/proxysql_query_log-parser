@@ -24,7 +24,9 @@ module ProxysqlQueryLog
         q.schema_name = parse_schema_name(io)
         q.client = parse_client(io)
         q.hid = parse_hid(io)
-        q.server = parse_server(io)
+        unless q.hid == 18446744073709551615
+          q.server = parse_server(io)
+        end
         q.start_time = parse_start_time(io)
         q.end_time = parse_end_time(io)
         q.digest = parse_digest(io)
