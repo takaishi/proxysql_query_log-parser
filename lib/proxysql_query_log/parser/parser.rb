@@ -101,9 +101,11 @@ module ProxysqlQueryLog
       buf = io.read(1).unpack('C')
       len = mysql_decode_length(buf[0])
       unless len == 0
-        buf2 = io.read(len-1).unpack('C*')
-        buf.concat(buf2)
-        return buf == 0 ? 0 : buf[0]
+        buf2 = case len
+               when 3
+                 (io.read(len-1) + ("\x00" * (9 - len))).unpack1('Q*')
+               end
+        return buf2
       end
     end
     
