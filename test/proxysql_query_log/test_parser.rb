@@ -1,5 +1,6 @@
 require 'test/unit'
 require 'helper'
+require 'tempfile'
 require 'proxysql_query_log/parser'
 
 class TestSample < Test::Unit::TestCase
@@ -23,6 +24,36 @@ class TestSample < Test::Unit::TestCase
       assert_equal(1525944256367837, q.end_time)
       assert_equal('0xD69C6B36F32D2EAE', q.digest)
       assert_equal('SELECT * FROM test', q.query)
+    end
+  end
+
+  def test_read_encode_length
+    parser = ProxysqlQueryLog::Parser.new
+
+    [
+        # <= 0xfb
+        {input: "\xFA", expected: 250},
+
+        # == 0xfc
+        {input: "\xFC\xFB\x00", expected: 251},
+        {input: "\xFC\xFF\xFF", expected: 65535},
+
+        {input: "\xFD\x00\x00\x01", expected: 65536},
+        {input: "\xFD\xFF\xFF\xFF", expected: 16777215},
+
+        # == 0xfe
+        {input: "\xFE\x00\x00\x00\x01\x00\x00\x00\x00", expected: 16777216},
+        {input: "\xFE\xFF\xFF\xFF\xFF\xFF\xFF\xFF\xFF", expected: UINT64_MAX},
+
+    ].each do |data|
+      input = data[:input]
+      expected = data[:expected]
+      Tempfile.open('proxysql_querylog'){|fp|
+        fp.binmode
+        fp.write(input.unpack('C*').pack('C*'))
+        fp.seek(0)
+        assert_equal(expected, parser.send(:read_encoded_length, fp))
+      }
     end
   end
 
