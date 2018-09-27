@@ -29,19 +29,15 @@ class TestSample < Test::Unit::TestCase
 
   def test_read_encode_length
     parser = ProxysqlQueryLog::Parser.new
+
     [
-        {
-            input: "\xC8",
-            expected: 200
-        },
-        {
-            input: "\xFB",
-            expected: 251
-        },
-        {
-            input: "\xFC\x9A\x01",
-            expected: 410
-        }
+        # <= 0xfb
+        {input: "\xC8", expected: 200},
+        {input: "\xFB", expected: 251},
+
+        # == 0xfc
+        {input: "\xFC\x9A\x01", expected: 410}
+
     ].each do |data|
       input = data[:input]
       expected = data[:expected]
