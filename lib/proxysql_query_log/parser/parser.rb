@@ -78,7 +78,7 @@ module ProxysqlQueryLog
 
     def parse_query(io)
       query_len = read_encoded_length(io)
-      read_encoded_string(io, query_len)
+      NKF.nkf('-w', read_encoded_string(io, query_len))
     end
 
     def mysql_decode_length(buf)

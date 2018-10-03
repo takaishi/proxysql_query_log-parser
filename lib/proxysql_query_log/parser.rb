@@ -1,4 +1,5 @@
 require 'json'
+require 'nkf'
 
 require 'proxysql_query_log/parser/parser'
 require 'proxysql_query_log/parser/query'
