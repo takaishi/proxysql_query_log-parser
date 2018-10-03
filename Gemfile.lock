@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    proxysql_query_log-parser (0.0.2)
+    proxysql_query_log-parser (0.0.4)
 
 GEM
   remote: https://rubygems.org/
@@ -37,4 +37,4 @@ DEPENDENCIES
   test-unit (~> 3.0)
 
 BUNDLED WITH
-   1.16.2
+   1.16.4
